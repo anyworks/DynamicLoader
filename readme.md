@@ -1,6 +1,7 @@
-I recommended to use this script for lover of bookmarklet.
-This script providing are:
-  * Can load a major CDN library easily that is already defined in this script.
-  * Also can load a any CDN library dynamically too.
-
-That's it!
+I recommended to use this script for who loves a bookmarklet.
+This script provides are:
+  * Can load javascript sequentially.
+  * Can load the major CDN libraries easily that are already defined in this script.
+  * Can load a any CDN library dynamically.
+   
+   
