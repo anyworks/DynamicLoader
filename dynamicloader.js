@@ -12,7 +12,6 @@
     return ar;
   };
   DL["addScriptTag"] = function (src,cb) {
-  DL["addScriptTag"] = function (src,cb) {
       if(!this.validURL(src))
       {
           console.warn(`ignored because of the string format is invalid : ${src}`);
