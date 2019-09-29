@@ -8,7 +8,7 @@
   };
   DL["qa"] = function(sel){
     var ar = document.querySelectorAll(sel) || [];
-    ar = Array.slice(ar);
+    ar = [].slice(ar);
     return ar;
   };
   DL["addScriptTag"] = function (src,cb) {
