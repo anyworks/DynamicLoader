@@ -29,6 +29,11 @@
                     calendar.render();
                 });
             });
+            describe("ql tool", function() {
+                it("single and multi", function() {
+                    expect(dl.qs("#cal")).not.toBe(null);
+                });
+            });
         });
 
     </script>

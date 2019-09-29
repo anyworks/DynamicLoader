@@ -3,6 +3,15 @@
   DL["queue"] = undefined;
   DL["define"] = undefined;
   DL["require"] = undefined;
+  DL["qs"] = function(sel){
+    return document.querySelector(sel);
+  };
+  DL["qa"] = function(sel){
+    var ar = document.querySelectorAll(sel) || [];
+    ar = Array.slice(ar);
+    return ar;
+  };
+  DL["addScriptTag"] = function (src,cb) {
   DL["addScriptTag"] = function (src,cb) {
       if(!this.validURL(src))
       {
