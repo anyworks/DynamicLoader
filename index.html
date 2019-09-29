@@ -9,13 +9,24 @@
     <script>
         window.addEventListener("DOMContentLoaded",function(){
             dl.use.all(["d3","jasmine"]);
-            dl.addScriptTag("https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
+            dl.addTagBoth("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/core/main.min.set");
+            dl.addTagBoth("https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/4.2.0/daygrid/main.min.set");
+            
         });
 
         window.addEventListener("load",function(){
-            describe("sample", function() {
+            describe("dynamic load", function() {
                 it("Jasmine has been loaded correctly", function() {
                     expect(jasmine).not.toBeUndefined();
+                });
+                it("full calender loaded", function() {
+                    var el = document.querySelector("#cal");
+                    expect(el).not.toBe(null);
+                    let calendar = new FullCalendar.Calendar(el, {
+                        plugins: [ "dayGrid" ],
+                        defaultView: 'dayGridMonth'
+                    });
+                    calendar.render();
                 });
             });
         });
@@ -23,6 +34,6 @@
     </script>
 </head>
 <body>
-    
+    <div id="cal"></div>
 </body>
 </html>

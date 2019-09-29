@@ -36,7 +36,7 @@
           this.queue.push(script);
   };
   
-  DL.addAnyTag = function (src,cb) 
+  DL.addTagBoth = function (src,cb) 
   {
     var splt = src.split(".");
     var ext = splt.pop();
@@ -112,7 +112,7 @@
     },
     jasmine: () =>{
           var ver = "3.4.0";
-          DL.addAnyTag(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/jasmine.min.set`);
+          DL.addTagBoth(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/jasmine.min.set`);
           DL.addScriptTag(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/jasmine-html.js`);
           DL.addScriptTag(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/boot.min.js`);
       },
@@ -155,9 +155,9 @@
       {
         var cur = ary[i];
         if(i===ary.length-1)
-            this.addAnyTag(cur,res);
+            this.addTagBoth(cur,res);
         else
-            this.addAnyTag(cur);
+            this.addTagBoth(cur);
       }    
     });
   };
