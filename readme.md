@@ -5,4 +5,4 @@ This script provides are:
   * Can load an any CDN library dynamically.
   * Can store/restore/load the CDN libraries with using the your localStorage that is provided by the architecture of HTML5.
    
-   
+   Demo Page [https://anyworks.github.io/DynamicLoader/]
