@@ -1,3 +1,4 @@
+
 (function(name){
   var DL = {};
   DL["queue"] = undefined;
@@ -10,11 +11,14 @@
     var ar = document.querySelectorAll(sel) || [];
     return Array.from(ar);
   };
-  DL["addScriptTag"] = function (src,cb) {
+  DL["addScriptTag"] = function (src) {
+    return new Promise((res,rej)=>{
+
       if(!this.validURL(src))
       {
-          console.warn(`ignored because of the string format is invalid : ${src}`);
-          return ;
+          var msg = `ignored because of the string format is invalid : ${src}`;
+          console.warn(msg);
+          return rej(msg);
       }
   
       var script = document.createElement('script');
@@ -31,8 +35,9 @@
           }
           else
               DL.queue = undefined;
-          if(cb)cb();
-      }
+
+          res(this.src);
+        }
   
       if(this.queue === undefined)
       {
@@ -41,37 +46,38 @@
       }
       else
           this.queue.push(script);
+    });
+
   };
   
-  DL.addTagBoth = function (src,cb) 
+  DL["addTagBoth"] = async function (src) 
   {
     var splt = src.split(".");
     var ext = splt.pop();
   
     if(ext === "js")
-      this.addScriptTag(src,cb);
+      await this.addScriptTag(src);
     else if(ext === "css")
-      this.addStyleTag(src,cb);
+      await this.addStyleTag(src);
     else if(ext === "set")
     {
       var fn = splt.join(".");
-      this.addScriptTag(fn+".js",cb);
       this.addStyleTag(fn+".css");
+      await this.addScriptTag(fn+".js");
     }
     else
       console.warn(`URL is invalid : ${src}`);
-  
   };
   
   
-  DL.stashRequireJS = function() {
+  DL["stashRequireJS"] = function() {
       DL.require = window.require;
       window.require = undefined; 
       DL.define = window.define;
       window.define = undefined; 
       console.log("disabled RequireJS")
   };
-  DL.restoreRequireJS = function() {
+  DL["popRequireJS"] = function() {
       window.require = DL.require;
       DL.require = undefined;
       window.define = DL.define;
@@ -79,54 +85,58 @@
       console.log("restored RequireJS")
   };
   
-  DL.addStyleTag = function(src,cb) {
-    if(!this.validURL(src))
-    {
-        console.warn(`Ignored because of the string format is invalid : ${src}`);
-        return ;
-    }
-    var link = document.createElement('link');
-    link.rel = "stylesheet";
-    //link.type = "text/css";
-    link.href = src;
-    link.onload = function(e){
-      console.log("loaded : " + this.href);
-      if(cb)
-        cb();
-    }
-    document.head.appendChild(link);
+  DL["addStyleTag"] = function(src) {
+    return new Promise((res,rej)=>{
+      if(!this.validURL(src))
+      {
+        var msg = `Ignored because of the string format is invalid : ${src}`;
+        console.warn(msg);
+        rej(msg);
+      }
+      var link = document.createElement('link');
+      link.rel = "stylesheet";
+      //link.type = "text/css";
+      link.href = src;
+      link.onload = function(e){
+        console.log("loaded : " + this.href);
+        res(this.href);
+      }
+      document.head.appendChild(link);
+    });
   };
-  DL.addStyle = function(src) {
+
+DL["addStyle"] = function(src) {
     var link = document.createElement('style');
     link.type = "text/css";
     link.innerHTML = src;
     document.head.appendChild(link);
   };
   
-  DL.use = {
-    d3sel: () => {
-      DL.addScriptTag("https://d3js.org/d3-selection.v1.min.js");
+  DL["use"] = {
+    d3sel: async () => {
+        await DL.addScriptTag("https://d3js.org/d3-selection.v1.min.js");
     },
-    d3: () => {
-      DL.addScriptTag("https://d3js.org/d3.v5.min.js");
+    d3: async () => {
+      await DL.addScriptTag("https://d3js.org/d3.v5.min.js");
     },
-    icons: () => {
-      DL.addStyleTag("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css");
+    icons: async() => {
+      await DL.addStyleTag("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css");
     },
-    react: () => {
+    react: async() => {
       DL.addScriptTag("https://unpkg.com/react@16/umd/react.development.js");
-      DL.addScriptTag("https://unpkg.com/react-dom@16/umd/react-dom.development.js");
+      await DL.addScriptTag("https://unpkg.com/react-dom@16/umd/react-dom.development.js");
     },
-    jasmine: () =>{
+    jasmine: async() =>{
           var ver = "3.4.0";
           DL.addTagBoth(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/jasmine.min.set`);
           DL.addScriptTag(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/jasmine-html.js`);
-          DL.addScriptTag(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/boot.min.js`);
+          await DL.addScriptTag(`https://cdnjs.cloudflare.com/ajax/libs/jasmine/${ver}/boot.min.js`);
       },
-    all: (names) => {
-      names.forEach((n) => {
-        try{DL.use[n].apply(DL)}catch(e){alert("Does not found the specified name : " + n);}
-      });
+    all: async (names) => {
+      for(var i=0;i<names.length;i++){  //Cannot use forEach, it is not designed for the async.  
+        var n = names[i];
+        try{ await DL.use[n].apply(DL)}catch(e){alert("Does not found the specified name : " + n);}
+      } 
     }
   };
   
@@ -140,11 +150,24 @@
       if(arg instanceof Array)
       {
           arg.forEach((e)=>{
-             ary.push(e);
+
+            if(!this.validURL(e))
+            {
+              var msg = `Ignored because of the string format is invalid : ${e}`;
+              console.warn(msg);
+            }else
+               ary.push(e);
           });
       }
       else{
-         ary.push(arg);
+        if(!this.validURL(e))
+        {
+          var msg = `Ignored because of the string format is invalid : ${e}`;
+          console.warn(msg);
+          return;
+        }
+        ary.push(arg);
+
       }
       localStorage.setItem('tempURLs',JSON.stringify(ary));
   };
@@ -156,17 +179,9 @@
         ary = [];
     else
         ary = JSON.parse(ary);
-  
-    return new Promise((res,rej)=>{
-      for(var i=0; i<ary.length;i++)
-      {
-        var cur = ary[i];
-        if(i===ary.length-1)
-            this.addTagBoth(cur,res);
-        else
-            this.addTagBoth(cur);
-      }    
-    });
+    
+    for(var i=0; i<ary.length;i++)
+      this.addTagBoth(ary[i]);
   };
   
   DL["clearStack"] = function()
@@ -184,12 +199,12 @@
       '(\\#[-a-z\\d_]*)?$','i'); /* fragment locator */
     return !!pattern.test(str);
   };
-  
-  
+
+  //allocation
   if(window[name] === undefined)
     window[name] = DL;
   else
     console.warn(`Did not assign the variable because of the already exists the global variable that name is ${name}`);
   
-  })("dl");
-  
+  })("dl")
+
