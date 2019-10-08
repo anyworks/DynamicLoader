@@ -1,3 +1,4 @@
+"use strict";
 (function (name) {
   var DL = {};
   DL["queue"] = undefined;
