@@ -135,7 +135,7 @@
 
   DL["addStack"] = function (arg) {
     var ary = localStorage.getItem('tempURLs');
-    if (ary === undefined) {
+    if (ary === null) {
       ary = [];
     } else {
       ary = JSON.parse(ary);
@@ -154,7 +154,7 @@
     }
     else {
       if (!this.validURL(arg)) {
-        var msg = `Ignored because of the string format is invalid : ${e}`;
+        var msg = `Ignored because of the string format is invalid : ${arg}`;
         console.warn(msg);
         return;
       }
