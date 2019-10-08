@@ -153,7 +153,7 @@
       });
     }
     else {
-      if (!this.validURL(e)) {
+      if (!this.validURL(arg)) {
         var msg = `Ignored because of the string format is invalid : ${e}`;
         console.warn(msg);
         return;
