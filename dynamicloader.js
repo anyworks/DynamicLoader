@@ -8,13 +8,18 @@
   DL["qs"] = function(sel){
     return document.querySelector(sel);
   };
-  Element.prototype.qs = DL["qs"];
-
+  Element.prototype.qs = function(sel){
+    return this.querySelector(sel);
+  };
+  
   DL["qa"] = function(sel){
     var ar = document.querySelectorAll(sel) || [];
     return Array.from(ar);
   };
-  Element.prototype.qa = DL["qa"];
+  Element.prototype.qa = function(sel){
+    var ar = this.querySelectorAll(sel) || [];
+    return Array.from(ar);
+  };
 
   DL["addScriptTag"] = function (src) {
     return new Promise((res,rej)=>{
