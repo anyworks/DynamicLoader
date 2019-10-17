@@ -5,21 +5,19 @@
   DL["queue"] = undefined;
   DL["define"] = undefined;
   DL["require"] = undefined;
-  DL["qs"] = function(sel){
-    return document.querySelector(sel);
-  };
-  Element.prototype.qs = function(sel){
+
+  var qs = function(sel){
     return this.querySelector(sel);
   };
+  DL["qs"] = qs.bind(document);
+  Element.prototype.qs = qs;
   
-  DL["qa"] = function(sel){
-    var ar = document.querySelectorAll(sel) || [];
-    return Array.from(ar);
-  };
-  Element.prototype.qa = function(sel){
+  var qa =  function(sel){
     var ar = this.querySelectorAll(sel) || [];
     return Array.from(ar);
   };
+  DL["qa"] = qa.bind(document);
+  Element.prototype.qa = qa;
 
   DL["addScriptTag"] = function (src) {
     return new Promise((res,rej)=>{
