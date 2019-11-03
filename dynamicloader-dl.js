@@ -1,6 +1,6 @@
 "use strict";
 
-window.iniDL = function(name){
+(function(name){
   var DL = {};
   DL["queue"] = undefined;
   DL["define"] = undefined;
@@ -214,6 +214,6 @@ DL["addStyle"] = function(src) {
   else
     console.warn(`Did not assign the variable because of the already exists the global variable that name is ${name}`);
   
-  };
+  })("dl");
   
 
