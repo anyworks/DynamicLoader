@@ -1,6 +1,6 @@
 "use strict";
 
-window.iniDL = function(name){
+window.DynamicLoader = function(name){
   var DL = {};
   DL["queue"] = undefined;
   DL["define"] = undefined;
@@ -121,6 +121,9 @@ DL["addStyle"] = function(src) {
   };
   
   DL["use"] = {
+    resetcss: async () => {
+      await DL.addStyleTag("https://raw.githubusercontent.com/nicolas-cusan/destyle.css/master/destyle.css");
+  },
     d3sel: async () => {
         await DL.addScriptTag("https://d3js.org/d3-selection.v1.min.js");
     },
