@@ -211,6 +211,13 @@ DL["addStyle"] = function(src) {
     return !!pattern.test(str);
   };
 
+  //allocation
+  if(window[name] === undefined)
+    window[name] = DL;
+  else
+    console.warn(`Did not assign the variable because of the already exists the global variable that name is ${name}`);
+
+
   })("dl");
   
 
