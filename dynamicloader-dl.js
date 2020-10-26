@@ -121,10 +121,10 @@
       await DL.addScriptTag(`https://d3js.org/d3.v${v}.min.js`);
     },
     d3v5: async () => {
-      await DL.use.d3v("d3",5);
+      await DL.use.d3v(5);
     },
     d3: async () => {
-      await DL.use.d3v("d3",6);
+      await DL.use.d3v(6);
     },
     icons: async () => {
       await DL.addStyleTag("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css");
