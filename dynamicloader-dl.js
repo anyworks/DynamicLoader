@@ -123,7 +123,7 @@
     d3v5: async () => {
       await DL.use.d3v("d3",5);
     },
-    d3: async (v) => {
+    d3: async () => {
       await DL.use.d3v("d3",6);
     },
     icons: async () => {
