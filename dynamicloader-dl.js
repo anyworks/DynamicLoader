@@ -117,10 +117,10 @@
     resetcss: async () => {
       await DL.addStyleTag("https://raw.githubusercontent.com/nicolas-cusan/destyle.css/master/destyle.css");
     },
-    d3v: async () => {
+    d3v: async (v) => {
       await DL.addScriptTag(`https://d3js.org/d3.v${v}.min.js`);
     },
-    d3v5: async (v) => {
+    d3v5: async () => {
       await DL.use.d3v("d3",5);
     },
     d3: async (v) => {
